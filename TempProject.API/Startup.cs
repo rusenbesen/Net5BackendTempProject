@@ -41,6 +41,11 @@ namespace TempProject.API
             services.AddScoped(typeof(IService<>), typeof(Service<>));
             services.AddAutoMapper(typeof(MapProfile));
 
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+
             services.AddDbContext<AppDbContext>(x =>
             {
                 x.UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection"), option =>
