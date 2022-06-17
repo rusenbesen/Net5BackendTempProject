@@ -10,7 +10,7 @@ using TempProject.Repository;
 namespace TempProject.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220605125003_initial")]
+    [Migration("20220617185523_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,7 +102,7 @@ namespace TempProject.Repository.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2022, 6, 5, 15, 50, 2, 787, DateTimeKind.Local).AddTicks(9460),
+                            CreatedDate = new DateTime(2022, 6, 17, 21, 55, 23, 488, DateTimeKind.Local).AddTicks(3580),
                             Name = "Kalem 1",
                             Price = 100m,
                             Stock = 20
@@ -111,7 +111,7 @@ namespace TempProject.Repository.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2022, 6, 5, 15, 50, 2, 788, DateTimeKind.Local).AddTicks(9085),
+                            CreatedDate = new DateTime(2022, 6, 17, 21, 55, 23, 489, DateTimeKind.Local).AddTicks(1833),
                             Name = "Kalem 2",
                             Price = 200m,
                             Stock = 30
@@ -120,7 +120,7 @@ namespace TempProject.Repository.Migrations
                         {
                             Id = 3,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2022, 6, 5, 15, 50, 2, 788, DateTimeKind.Local).AddTicks(9100),
+                            CreatedDate = new DateTime(2022, 6, 17, 21, 55, 23, 489, DateTimeKind.Local).AddTicks(1846),
                             Name = "Kalem 3",
                             Price = 600m,
                             Stock = 10
@@ -129,7 +129,7 @@ namespace TempProject.Repository.Migrations
                         {
                             Id = 4,
                             CategoryId = 2,
-                            CreatedDate = new DateTime(2022, 6, 5, 15, 50, 2, 788, DateTimeKind.Local).AddTicks(9102),
+                            CreatedDate = new DateTime(2022, 6, 17, 21, 55, 23, 489, DateTimeKind.Local).AddTicks(1847),
                             Name = "Kitap 1",
                             Price = 700m,
                             Stock = 60
@@ -138,7 +138,7 @@ namespace TempProject.Repository.Migrations
                         {
                             Id = 5,
                             CategoryId = 2,
-                            CreatedDate = new DateTime(2022, 6, 5, 15, 50, 2, 788, DateTimeKind.Local).AddTicks(9104),
+                            CreatedDate = new DateTime(2022, 6, 17, 21, 55, 23, 489, DateTimeKind.Local).AddTicks(1849),
                             Name = "Kitap 2",
                             Price = 750m,
                             Stock = 70
