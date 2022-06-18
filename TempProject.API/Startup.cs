@@ -1,11 +1,14 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using TempProject.API.Filters;
 using TempProject.Core.Repositories;
 using TempProject.Core.Services;
 using TempProject.Core.UnitOfWorks;
@@ -14,6 +17,7 @@ using TempProject.Repository.Repositories;
 using TempProject.Repository.UnitOfWorks;
 using TempProject.Service.Mapping;
 using TempProject.Service.Services;
+using TempProject.Service.Validations;
 
 namespace TempProject.API
 {
@@ -30,7 +34,11 @@ namespace TempProject.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers(options => options.Filters.Add(new ValidateFilterAttribute())).AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<ProductDtoValidator>());
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TempProject.API", Version = "v1" });
