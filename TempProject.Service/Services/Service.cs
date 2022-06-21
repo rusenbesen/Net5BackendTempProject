@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TempProject.Core.Repositories;
 using TempProject.Core.Services;
 using TempProject.Core.UnitOfWorks;
+using TempProject.Service.Exceptions;
 
 namespace TempProject.Service.Services
 {
@@ -42,7 +43,12 @@ namespace TempProject.Service.Services
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            var hasObject = await _repository.GetByIdAsync(id);
+            if(hasObject == null)
+            {
+                throw new NotFoundException($"{typeof(T).Name} not found");
+            }
+            return hasObject;
         }
 
         public async Task RemoveAsync(T entity)

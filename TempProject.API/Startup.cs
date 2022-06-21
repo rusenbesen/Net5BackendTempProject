@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using TempProject.API.Filters;
+using TempProject.API.Middlewares;
 using TempProject.Core.Repositories;
 using TempProject.Core.Services;
 using TempProject.Core.UnitOfWorks;
@@ -43,17 +44,10 @@ namespace TempProject.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TempProject.API", Version = "v1" });
             });
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped(typeof(IService<>), typeof(Service<>));
+            services.AddMemoryCache();
+            services.AddScoped(typeof(NotFoundFilter<>));
             services.AddAutoMapper(typeof(MapProfile));
-
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-
+          
             services.AddDbContext<AppDbContext>(x =>
             {
                 x.UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection"), option =>
@@ -74,6 +68,8 @@ namespace TempProject.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCustomException();
 
             app.UseRouting();
 

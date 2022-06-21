@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TempProject.API.Filters;
 using TempProject.Core.DTOs;
 using TempProject.Core.Entity;
 using TempProject.Core.Services;
@@ -37,6 +38,7 @@ namespace TempProject.API.Controllers
             return CreateActionResult(CustomResponseDto<List<ProductDto>>.Success(200, productsDtos));
         }
 
+        [ServiceFilter(typeof(NotFoundFilter<Product>))]
         //GET api/products/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
