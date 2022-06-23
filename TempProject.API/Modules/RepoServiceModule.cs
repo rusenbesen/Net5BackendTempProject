@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using System.Reflection;
+using TempProject.Caching;
 using TempProject.Core.Repositories;
 using TempProject.Core.Services;
 using TempProject.Core.UnitOfWorks;
@@ -28,6 +29,8 @@ namespace TempProject.API.Modules
             //InstancePerDependency => transient
             builder.RegisterAssemblyTypes(apiAssembly, repoAssembly, serviceAssembly).Where(x => x.Name.EndsWith("Repository")).AsImplementedInterfaces().InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(apiAssembly, repoAssembly, serviceAssembly).Where(x => x.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerLifetimeScope();
+
+            builder.RegisterType<ProductServiceWithCaching>().As<IProductService>();
         }
     }
 }

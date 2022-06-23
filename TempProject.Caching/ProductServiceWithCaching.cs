@@ -11,6 +11,7 @@ using TempProject.Core.Entity;
 using TempProject.Core.Repositories;
 using TempProject.Core.Services;
 using TempProject.Core.UnitOfWorks;
+using TempProject.Service.Exceptions;
 
 namespace TempProject.Caching
 {
@@ -31,7 +32,7 @@ namespace TempProject.Caching
 
             if (!_memoryCache.TryGetValue(CacheProductKey, out _))
             {
-                _memoryCache.Set(CacheProductKey, _repository.GetAll().ToList());
+                _memoryCache.Set(CacheProductKey, _repository.GetProductsWithCategory().Result);
             }
         }
 
@@ -51,29 +52,36 @@ namespace TempProject.Caching
             return entities;
         }
 
-        public Task<bool> AnyAsync(Expression<Func<Product, bool>> expression)
+        public  Task<bool> AnyAsync(Expression<Func<Product, bool>> expression)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_memoryCache.Get<List<Product>>(CacheProductKey).FirstOrDefault(expression.Compile())!= null);
         }
 
         public Task<IEnumerable<Product>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_memoryCache.Get<IEnumerable<Product>>(CacheProductKey));
         }
 
         public Task<Product> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var productItem = _memoryCache.Get<List<Product>>(CacheProductKey).FirstOrDefault(x => x.Id == id);
+            if (productItem == null)
+            {
+                throw new NotFoundException($"{typeof(Product).Name} not found");
+            }
+            return Task.FromResult(productItem);
         }
 
         public Task<CustomResponseDto<List<ProductWithCategoryDto>>> GetProductsWithCategory()
         {
-            throw new NotImplementedException();
+           var products =  _memoryCache.Get<IEnumerable<Product>>(CacheProductKey);
+            var productsWithCategoryDto = _mapper.Map<List<ProductWithCategoryDto>>(products);
+            return Task.FromResult(CustomResponseDto<List<ProductWithCategoryDto>>.Success(200, productsWithCategoryDto));
         }
 
         public async Task RemoveAsync(Product entity)
         {
-             _repository.Remove(entity);
+            _repository.Remove(entity);
             await _unitOfWork.CommitAsync();
             await CacheAllProductsAsync();
         }
@@ -85,14 +93,16 @@ namespace TempProject.Caching
             await CacheAllProductsAsync();
         }
 
-        public Task UpdateAsync(Product entity)
+        public async Task UpdateAsync(Product entity)
         {
-            throw new NotImplementedException();
+            _repository.Update(entity);
+            await _unitOfWork.CommitAsync();
+            await CacheAllProductsAsync();
         }
 
         public IQueryable<Product> Where(Expression<Func<Product, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _memoryCache.Get<List<Product>>(CacheProductKey).Where(expression.Compile()).AsQueryable();
         }
 
         public async Task CacheAllProductsAsync()
