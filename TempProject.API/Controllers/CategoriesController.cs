@@ -9,7 +9,7 @@ using TempProject.Core.Services;
 
 namespace TempProject.API.Controllers
 {
-   
+
     public class CategoriesController : CustomBaseController
     {
         private readonly IMapper _mapper;

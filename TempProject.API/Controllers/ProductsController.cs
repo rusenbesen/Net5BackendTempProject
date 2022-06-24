@@ -10,7 +10,7 @@ using TempProject.Core.Services;
 
 namespace TempProject.API.Controllers
 {
-    
+
     public class ProductsController : CustomBaseController
     {
         private readonly IMapper _mapper;

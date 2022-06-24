@@ -10,14 +10,8 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using TempProject.API.Filters;
 using TempProject.API.Middlewares;
-using TempProject.Core.Repositories;
-using TempProject.Core.Services;
-using TempProject.Core.UnitOfWorks;
 using TempProject.Repository;
-using TempProject.Repository.Repositories;
-using TempProject.Repository.UnitOfWorks;
 using TempProject.Service.Mapping;
-using TempProject.Service.Services;
 using TempProject.Service.Validations;
 
 namespace TempProject.API
@@ -47,7 +41,7 @@ namespace TempProject.API
             services.AddMemoryCache();
             services.AddScoped(typeof(NotFoundFilter<>));
             services.AddAutoMapper(typeof(MapProfile));
-          
+
             services.AddDbContext<AppDbContext>(x =>
             {
                 x.UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection"), option =>

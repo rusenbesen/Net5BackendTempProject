@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Linq;
 using System.Threading.Tasks;
-using TempProject.Core.DTOs;
+using TempProject.Core.ViewModels;
 using TempProject.Core.Entity;
 using TempProject.Core.Services;
 
-namespace TempProject.API.Filters
+namespace TempProject.Web.Filters
 {
     public class NotFoundFilter<T> : IAsyncActionFilter where T : BaseEntity
     {
@@ -33,7 +33,9 @@ namespace TempProject.API.Filters
                 await next.Invoke();
                 return;
             }
-            context.Result = new NotFoundObjectResult(CustomResponseDto<NoContentDto>.Fail(404, $"{typeof(T).Name} not found"));
+            var errorViewModel = new ErrorViewModel();
+            errorViewModel.Errors.Add($"{typeof(T).Name} not found");
+            context.Result = new RedirectToActionResult("Error", "Home", errorViewModel);
         }
     }
 }

@@ -52,9 +52,9 @@ namespace TempProject.Caching
             return entities;
         }
 
-        public  Task<bool> AnyAsync(Expression<Func<Product, bool>> expression)
+        public Task<bool> AnyAsync(Expression<Func<Product, bool>> expression)
         {
-            return Task.FromResult(_memoryCache.Get<List<Product>>(CacheProductKey).FirstOrDefault(expression.Compile())!= null);
+            return Task.FromResult(_memoryCache.Get<List<Product>>(CacheProductKey).FirstOrDefault(expression.Compile()) != null);
         }
 
         public Task<IEnumerable<Product>> GetAllAsync()
@@ -74,7 +74,7 @@ namespace TempProject.Caching
 
         public Task<CustomResponseDto<List<ProductWithCategoryDto>>> GetProductsWithCategory()
         {
-           var products =  _memoryCache.Get<IEnumerable<Product>>(CacheProductKey);
+            var products = _memoryCache.Get<IEnumerable<Product>>(CacheProductKey);
             var productsWithCategoryDto = _mapper.Map<List<ProductWithCategoryDto>>(products);
             return Task.FromResult(CustomResponseDto<List<ProductWithCategoryDto>>.Success(200, productsWithCategoryDto));
         }
